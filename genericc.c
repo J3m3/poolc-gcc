@@ -44,31 +44,43 @@ void test_ints(void) {
 }
 
 void test_points(void) {
-  Points pts;
+  Points pts1;
   Point p1 = {1, 2}, p2 = {3, 4}, origin = {0, 0};
-  vec_init(&pts, p1, p2, origin);
+  vec_init(&pts1, p1, p2, origin);
 
-  assert(vec_len(&pts) == 3);
-  assert(vec_at(&pts, 0).x == 1);
-  assert(vec_at(&pts, 2).x == 0);
+  assert(vec_len(&pts1) == 3);
+  assert(vec_at(&pts1, 0).x == 1);
+  assert(vec_at(&pts1, 2).x == 0);
 
-  ssize_t idx = vec_find(&pts, is_origin);
+  ssize_t idx = vec_find(&pts1, is_origin);
   assert(idx == 2);
 
-  vec_free(&pts);
+  Points pts2 = vec_new(Points, (Point){1, 2}, (Point){3, 4}, (Point){5, 6});
+  Point p3 = vec_pop(&pts2);
+  assert(p3.x == 5);
+  assert(p3.y == 6);
+
+  vec_free(&pts1);
+  vec_free(&pts2);
 }
 
 void test_static_strings(void) {
-  StaticStrings strs;
-  vec_init(&strs, "foo", "bar", "hello", "baz");
+  StaticStrings strs1;
+  vec_init(&strs1, "foo", "bar", "hello", "baz");
 
-  assert(vec_len(&strs) == 4);
-  assert(strcmp(vec_at(&strs, 2), "hello") == 0);
+  assert(vec_len(&strs1) == 4);
+  assert(strcmp(vec_at(&strs1, 2), "hello") == 0);
 
-  ssize_t idx = vec_find(&strs, match_hello);
+  ssize_t idx = vec_find(&strs1, match_hello);
   assert(idx == 2);
 
-  vec_free(&strs);
+  StaticStrings strs2 = vec_new(StaticStrings);
+  const char *poolc = "poolc";
+  vec_push(&strs2, poolc);
+  const char *last = vec_at(&strs2, vec_len(&strs2) - 1);
+  assert(strncmp(last, "poolc", strlen(poolc)) == 0);
+
+  vec_free(&strs1);
 }
 
 int main(void) {
