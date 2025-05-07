@@ -44,15 +44,19 @@
 
 // Uses GNU-style `typeof`, standardized in C23:
 //   - typeof(expr) deduces the type of `expr` without evaluating it
-//   - safe even if `expr` is NULL or uninitialized, unless VLA is involved
+//   - Safe even if `expr` is NULL or uninitialized, unless VLA is involved
 //   - References:
 //     - https://en.cppreference.com/w/c/language/typeof
 //     - https://gcc.gnu.org/onlinedocs/gcc/Typeof.html
 // Compatibility:
-//   - gcc / clang: supported as an extension
-//   - msvc: supported only if it follows C23 standard
+//   - GCC / Clang: supported as an extension
+//   - MSVC: supported since Visual Studio 17.9 or later, or cl.exe version
+//           19.3933428 or later
 // Edge case handling:
 //   - Safe for zero arguments (no memory access unless element count > 0)
+// Caveat:
+//   - Do **not** call `vec_init` on a vector that has already been initialized
+//     (i.e., without a prior call to `vec_free`), or memory will leak.
 #define vec_init(vec, ...)                                                     \
   do {                                                                         \
     typeof(*(vec)) *_v = (vec);                                                \
@@ -68,13 +72,13 @@
   } while (0)
 
 // Uses GNU-style statement expressions:
-//   - a compound statement enclosed in parentheses may appear as an expression
+//   - A compound statement enclosed in parentheses may appear as an expression
 //     in GNU C.
 //   - References:
 //     - https://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html
 // Compatibility:
-//   - gcc / clang: supported as an extension
-//   - msvc: not supported
+//   - GCC / Clang: supported as an extension
+//   - MSVC: not supported
 #define vec_find(vec, f)                                                       \
   ({                                                                           \
     ssize_t _res = -1;                                                         \
