@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #define INITIAL_CAP 8
+#define CAP_INC_FACTOR 2
 
 #define DEFINE_VEC(name, type)                                                 \
   typedef struct {                                                             \
@@ -17,7 +18,7 @@
       if ((vec)->capacity == 0)                                                \
         (vec)->capacity = INITIAL_CAP;                                         \
       else                                                                     \
-        (vec)->capacity *= 2;                                                  \
+        (vec)->capacity *= CAP_INC_FACTOR;                                     \
       (vec)->items =                                                           \
           realloc((vec)->items, (vec)->capacity * sizeof(*(vec)->items));      \
     }                                                                          \
