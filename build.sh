@@ -14,4 +14,4 @@ fi
 src=genericc.c
 
 $CC -E $src > "expanded_$src"
-$CC -o "${src%.c}" $src
+$CC -o "${src%.c}" -g $src
