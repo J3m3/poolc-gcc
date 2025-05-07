@@ -2,6 +2,27 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#if defined(__GNUC__) || defined(__clang__)
+#define HAS_TYPEOF 1
+#define HAS_STMT_EXPRS 1
+#elif defined(_MSC_FULL_VER) && _MSC_FULL_VER >= 193933428
+#define HAS_TYPEOF 1
+#define HAS_STMT_EXPRS 0
+#else
+#define HAS_TYPEOF 0
+#define HAS_STMT_EXPRS 0
+#endif
+
+#ifndef SUPPORTS_VEC_INIT
+#define SUPPORTS_VEC_INIT HAS_TYPEOF
+#endif
+#ifndef SUPPORTS_VEC_NEW
+#define SUPPORTS_VEC_NEW (HAS_TYPEOF && HAS_STMT_EXPRS)
+#endif
+#ifndef SUPPORTS_VEC_FIND
+#define SUPPORTS_VEC_FIND (HAS_TYPEOF && HAS_STMT_EXPRS)
+#endif
+
 #define INITIAL_CAP 8
 #define CAP_INC_FACTOR 2
 
@@ -43,6 +64,8 @@
     free((vec)->items);                                                        \
   } while (0)
 
+#if HAS_TYPEOF
+
 // Uses GNU-style `typeof`, standardized in C23:
 //   - typeof(expr) deduces the type of `expr` without evaluating it
 //   - Safe even if `expr` is NULL or uninitialized, unless VLA is involved
@@ -71,6 +94,15 @@
     for (size_t _i = 0; _i < _n; ++_i)                                         \
       vec_push(_v, _tmp[_i]);                                                  \
   } while (0)
+
+#else
+
+#pragma message("Warning: vec_init is disabled on this compiler.")
+#define vec_init(vec, ...)
+
+#endif
+
+#if HAS_STMT_EXPRS && HAS_TYPEOF
 
 // Uses GNU-style statement expressions:
 //   - A compound statement enclosed in parentheses may appear as an expression
@@ -109,3 +141,10 @@
     _v;                                                                        \
   })
 
+#else
+
+#pragma message("Warning: vec_find and vec_new are disabled on this compiler.")
+#define vec_find(vec, ...) (-1)
+#define vec_new(type, ...) ((type){0})
+
+#endif
