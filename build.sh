@@ -11,4 +11,7 @@ else
     exit 1
 fi
 
-$CC -o genericc genericc.c
+src=genericc.c
+
+$CC -E $src > "expanded_$src"
+$CC -o "${src%.c}" $src
