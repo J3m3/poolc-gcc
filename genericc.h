@@ -91,3 +91,21 @@
     }                                                                          \
     _res;                                                                      \
   })
+
+#define vec_new(type, ...)                                                     \
+  ({                                                                           \
+    type _v = {0};                                                             \
+                                                                               \
+    typeof(*_v.items) _tmp[] = {__VA_ARGS__};                                  \
+    size_t _n = sizeof(_tmp) / sizeof(typeof(*_v.items));                      \
+                                                                               \
+    _v.capacity = INITIAL_CAP;                                                 \
+    while (_v.capacity < _n)                                                   \
+      _v.capacity *= CAP_INC_FACTOR;                                           \
+    _v.items = malloc(_v.capacity * sizeof(typeof(*_v.items)));                \
+    for (size_t _i = 0; _i < _n; ++_i)                                         \
+      vec_push(&_v, _tmp[_i]);                                                 \
+                                                                               \
+    _v;                                                                        \
+  })
+
