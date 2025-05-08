@@ -78,6 +78,38 @@ void test_vec_basic_static_strings(void) {
   vec_free(&strs);
 }
 
+// === Tests for vec_init_with ===
+void test_vec_init_with_ints(void) {
+  Ints v;
+  vec_init_with(int, &v, 1, 2, 3);
+
+  assert(vec_len(&v) == 3);
+  assert(vec_at(&v, 0) == 1);
+
+  vec_free(&v);
+}
+
+void test_vec_init_with_points(void) {
+  Points v;
+  vec_init_with(Point, &v, (Point){0, 0}, (Point){1, 2});
+
+  assert(vec_len(&v) == 2);
+  assert(vec_at(&v, 1).y == 2);
+
+  vec_free(&v);
+}
+
+void test_vec_init_with_static_strings(void) {
+  StaticStrings v;
+  const char *s1 = "foo";
+  const char *s2 = "bar";
+  vec_init_with(const char *, &v, s1, s2);
+
+  assert(strncmp(vec_at(&v, 1), "bar", strlen(s2)) == 0);
+
+  vec_free(&v);
+}
+
 // === Tests for vec_init ===
 #if SUPPORTS_VEC_INIT
 void test_vec_init_ints(void) {
@@ -189,6 +221,11 @@ void test_vec_new_static_strings(void) {
 #endif
 
 int main(void) {
+  test_vec_basic_ints();
+  test_vec_init_with_ints();
+  test_vec_init_with_points();
+  test_vec_init_with_static_strings();
+
 #if SUPPORTS_VEC_INIT
   test_vec_init_ints();
   test_vec_init_points();
