@@ -66,6 +66,19 @@
       free((vec)->items);                                                      \
   } while (0)
 
+#define vec_init_with(elem_type, vec, ...)                                     \
+  do {                                                                         \
+    (vec)->length = 0;                                                         \
+    (vec)->capacity = 0;                                                       \
+    (vec)->items = NULL;                                                       \
+                                                                               \
+    elem_type _tmp[] = {__VA_ARGS__};                                          \
+    size_t _n = sizeof(_tmp) / sizeof(elem_type);                              \
+                                                                               \
+    for (size_t _i = 0; _i < _n; ++_i)                                         \
+      vec_push((vec), _tmp[_i]);                                               \
+  } while (0)
+
 #if HAS_TYPEOF
 
 // Uses GNU-style `typeof`, standardized in C23:
@@ -99,8 +112,8 @@
 
 #else
 
-#pragma message("Warning: vec_init is disabled on this compiler.")
-#define vec_init(vec, ...)
+#pragma message(                                                               \
+    "Warning: vec_init is disabled on this compiler; use vec_init_with")
 
 #endif
 
