@@ -62,7 +62,8 @@
   do {                                                                         \
     vec_clear((vec));                                                          \
     (vec)->capacity = 0;                                                       \
-    free((vec)->items);                                                        \
+    if ((vec)->items != NULL)                                                  \
+      free((vec)->items);                                                      \
   } while (0)
 
 #if HAS_TYPEOF
