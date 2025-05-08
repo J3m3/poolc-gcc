@@ -99,12 +99,12 @@
 #define vec_init(vec, ...)                                                     \
   vec_init_with(typeof(*(vec)->items), (vec), __VA_ARGS__)
 
-#else
+#else // HAS_TYPEOF
 
 #pragma message(                                                               \
     "Warning: vec_init is disabled on this compiler; use vec_init_with")
 
-#endif
+#endif // HAS_TYPEOF
 
 #if HAS_STMT_EXPRS && HAS_TYPEOF
 
@@ -141,8 +141,8 @@
     _v;                                                                        \
   })
 
-#else
+#else // HAS_STMT_EXPRS && HAS_TYPEOF
 
 #pragma message("Warning: vec_find and vec_new are disabled on this compiler.")
 
-#endif
+#endif // HAS_STMT_EXPRS && HAS_TYPEOF
