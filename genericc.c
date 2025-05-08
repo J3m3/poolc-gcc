@@ -1,3 +1,7 @@
+// We can definitely use -I for different include paths, but let's go with much
+// simpler apporach. Change below line to `#include "genericc_template.h"`
+// This removes setting up compiler_commands.json or similar stuffs for your
+// language server to work properly.
 #include "genericc.h"
 #include <assert.h>
 #include <stdio.h>
@@ -220,6 +224,9 @@ void test_vec_new_static_strings(void) {
 }
 #endif
 
+// We can use #ifdef ... #endif, but let's go with simpler approach:
+// commenting out irrelevant tests. Then Visual Studio users can also easily
+// follow the process.
 int main(void) {
   test_vec_basic_ints();
   test_vec_init_with_ints();
