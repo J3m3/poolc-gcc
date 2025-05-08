@@ -155,7 +155,5 @@
 #else
 
 #pragma message("Warning: vec_find and vec_new are disabled on this compiler.")
-#define vec_find(vec, ...) (-1)
-#define vec_new(type, ...) ((type){0})
 
 #endif
