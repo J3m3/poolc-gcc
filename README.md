@@ -17,6 +17,8 @@ This seminar explores some practical metaprogramming techniques in C to simulate
 - [Statements and Declarations in Expressions](https://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html)
 - [Compound literals](https://en.cppreference.com/w/c/language/compound_literal)
 - [typeof, \_\_typeof\_\_ (C23) in MSVC](https://learn.microsoft.com/en-us/cpp/c-language/typeof-c?view=msvc-170)
+- [/std (Specify Language Standard Version in MSVC)](https://learn.microsoft.com/en-us/cpp/build/reference/std-specify-language-standard-version?view=msvc-170#syntax)
+- [Set compiler and build properties in Visual Studio](https://learn.microsoft.com/en-us/cpp/build/working-with-project-properties?view=msvc-170#c-compiler-and-linker-options)
 
 ## Further Resources
 
