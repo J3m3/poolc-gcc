@@ -97,18 +97,7 @@
 //   - Do **not** call `vec_init` on a vector that has already been initialized
 //     (i.e., without a prior call to `vec_free`), or memory will leak.
 #define vec_init(vec, ...)                                                     \
-  do {                                                                         \
-    typeof(*(vec)) *_v = (vec);                                                \
-    _v->length = 0;                                                            \
-    _v->capacity = 0;                                                          \
-    _v->items = NULL;                                                          \
-                                                                               \
-    typeof(*_v->items) _tmp[] = {__VA_ARGS__};                                 \
-    size_t _n = sizeof(_tmp) / sizeof(typeof(*_v->items));                     \
-                                                                               \
-    for (size_t _i = 0; _i < _n; ++_i)                                         \
-      vec_push(_v, _tmp[_i]);                                                  \
-  } while (0)
+  vec_init_with(typeof(*(vec)->items), (vec), __VA_ARGS__)
 
 #else
 
