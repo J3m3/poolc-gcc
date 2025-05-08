@@ -26,6 +26,7 @@
 #define INITIAL_CAP 8
 #define CAP_INC_FACTOR 2
 
+// SAFETY: This is neither reentrant nor thread-safe!
 #define DEFINE_VEC(name, type)                                                 \
   typedef struct {                                                             \
     type *items;                                                               \
