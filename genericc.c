@@ -128,7 +128,7 @@ void test_vec_init_ints(void) {
 
 void test_vec_init_points(void) {
   Points v;
-  vec_init(&v, ((Point){0, 0}), ((Point){1, 2}));
+  vec_init(&v, (Point){0, 0}, (Point){1, 2});
 
   assert(vec_len(&v) == 2);
   assert(vec_at(&v, 1).y == 2);
