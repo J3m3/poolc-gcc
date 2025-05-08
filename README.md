@@ -11,6 +11,7 @@ This seminar explores some practical metaprogramming techniques in C to simulate
 
 ## References
 
+- [Other operators - Built-in comma operator](https://en.cppreference.com/w/cpp/language/operator_other)
 - [typeof operators](https://en.cppreference.com/w/c/language/typeof)
 - [Referring to a Type with typeof](https://gcc.gnu.org/onlinedocs/gcc/Typeof.html)
 - [Statements and Declarations in Expressions](https://gcc.gnu.org/onlinedocs/gcc/Statement-Exprs.html)
