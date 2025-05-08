@@ -90,7 +90,7 @@
 // Compatibility:
 //   - GCC / Clang: supported as an extension
 //   - MSVC: supported since Visual Studio 17.9 or later, or cl.exe version
-//           19.3933428 or later
+//           19.3933428 or later (`/std:clatest` option required)
 // Edge case handling:
 //   - Safe for zero arguments (no memory access unless element count > 0)
 // Caveat:
