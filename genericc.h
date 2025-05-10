@@ -133,7 +133,7 @@
     type _v = {0};                                                             \
                                                                                \
     typeof(*_v.items) _tmp[] = {__VA_ARGS__};                                  \
-    size_t _n = sizeof(_tmp) / sizeof(typeof(*_v.items));                      \
+    size_t _n = sizeof(_tmp) / sizeof(*_v.items);                              \
                                                                                \
     for (size_t _i = 0; _i < _n; ++_i)                                         \
       vec_push(&_v, _tmp[_i]);                                                 \
