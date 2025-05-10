@@ -119,7 +119,7 @@
 #define vec_find(vec, f)                                                       \
   ({                                                                           \
     ssize_t _res = -1;                                                         \
-    for (size_t i = 0; i < vec_len(vec); ++i) {                                \
+    for (size_t i = 0; i < (vec)->length; ++i) {                               \
       if ((f)(vec_at(vec, i)) == 0) {                                          \
         _res = i;                                                              \
         break;                                                                 \
