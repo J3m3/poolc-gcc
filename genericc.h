@@ -116,6 +116,13 @@
 // Compatibility:
 //   - GCC / Clang: supported as an extension
 //   - MSVC: not supported
+// Note:
+//   - Why use a function pointer instead of passing a value to find?
+//     When comparing null-terminated C strings, we usually don't want to
+//     compare their addresses using `==`; instead, we want to compare the
+//     contents character by character using something like `strncmp`.
+//     Using a function pointer gives users more flexibility in defining
+//     custom comparison logic, so we prefer this approach.
 #define vec_find(vec, f)                                                       \
   ({                                                                           \
     ssize_t _res = -1;                                                         \
