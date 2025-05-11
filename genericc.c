@@ -193,37 +193,6 @@ void test_vec_find_strings(void) {
 }
 #endif
 
-// === Tests for vec_new ===
-#if SUPPORTS_VEC_NEW
-void test_vec_new_ints(void) {
-  Ints v = vec_new(Ints, 4, 5, 6);
-
-  assert(vec_len(&v) == 3);
-  assert(vec_at(&v, 2) == 6);
-
-  vec_free(&v);
-}
-
-void test_vec_new_points(void) {
-  Points v = vec_new(Points, (Point){1, 2}, (Point){3, 4});
-
-  Point p = vec_pop(&v);
-  assert(p.x == 3 && p.y == 4);
-
-  vec_free(&v);
-}
-
-void test_vec_new_static_strings(void) {
-  StaticStrings v = vec_new(StaticStrings);
-
-  const char *s = "poolc";
-  vec_push(&v, s);
-  assert(strncmp(vec_at(&v, 0), "poolc", strlen(s)) == 0);
-
-  vec_free(&v);
-}
-#endif
-
 // We can use #ifdef ... #endif, but let's go with simpler approach:
 // commenting out irrelevant tests. Then Visual Studio users can also easily
 // follow the process.
@@ -243,12 +212,6 @@ int main(void) {
   test_vec_find_ints();
   test_vec_find_points();
   test_vec_find_strings();
-#endif
-
-#if SUPPORTS_VEC_NEW
-  test_vec_new_ints();
-  test_vec_new_points();
-  test_vec_new_static_strings();
 #endif
 
   printf("PASS!\n");

@@ -19,9 +19,6 @@
 #ifndef SUPPORTS_VEC_INIT
 #define SUPPORTS_VEC_INIT HAS_TYPEOF
 #endif
-#ifndef SUPPORTS_VEC_NEW
-#define SUPPORTS_VEC_NEW (HAS_TYPEOF && HAS_STMT_EXPRS)
-#endif
 #ifndef SUPPORTS_VEC_FIND
 #define SUPPORTS_VEC_FIND (HAS_TYPEOF && HAS_STMT_EXPRS)
 #endif
@@ -136,19 +133,6 @@
       }                                                                        \
     }                                                                          \
     _res;                                                                      \
-  })
-
-#define vec_new(type, ...)                                                     \
-  ({                                                                           \
-    type _v = {0};                                                             \
-                                                                               \
-    typeof(*_v.items) _tmp[] = {__VA_ARGS__};                                  \
-    size_t _n = sizeof(_tmp) / sizeof(*_v.items);                              \
-                                                                               \
-    for (size_t _i = 0; _i < _n; ++_i)                                         \
-      vec_push(&_v, _tmp[_i]);                                                 \
-                                                                               \
-    _v;                                                                        \
   })
 
 #else // HAS_STMT_EXPRS && HAS_TYPEOF
