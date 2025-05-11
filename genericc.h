@@ -77,6 +77,66 @@
       free((vec)->items);                                                      \
   } while (0)
 
+// Caveat:
+//   - Do **not** call `vec_init` on a vector that has already been initialized
+//     (i.e., without a prior call to `vec_free`), or memory will leak.
+//   - Let me first post warnings I got when I compile with `-pedantic`:
+//
+// clang-format off
+// <source>:248:24: warning: passing no argument for the '...' parameter of a variadic macro is a C23 extension [-Wc23-extensions]
+//    248 |   vec_init_with(int, &v);
+//        |                        ^
+//  <source>:77:9: note: macro 'vec_init_with' defined here
+//     77 | #define vec_init_with(elem_type, vec, ...)                                     \
+//        |         ^
+//  <source>:248:3: warning: use of an empty initializer is a C23 extension [-Wc23-extensions]
+//    248 |   vec_init_with(int, &v);
+//        |   ^
+//  <source>:86:24: note: expanded from macro 'vec_init_with'
+//     86 |     elem_type _tmp[] = {__VA_ARGS__};                                          \
+//        |                        ^
+//  <source>:248:3: warning: zero size arrays are an extension [-Wzero-length-array]
+//  <source>:86:24: note: expanded from macro 'vec_init_with'
+//     86 |     elem_type _tmp[] = {__VA_ARGS__};                                          \
+//        |                        ^
+// clang-format on
+//
+//     At first glance, these warnings are expected. To work around the issue,
+//     we can count the number of arguments given as `...`, and dispatch
+//     different `vec_init` (e.g. `vec_init0`, `vec_initN`). The below article
+//     shows how can we determine if `...` is empty in C99:
+//
+//     https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/#comment-169
+//     `- referred by:
+//        https://t6847kimo.github.io/blog/2019/02/04/Remove-comma-in-variadic-macro.html
+//
+//     However, clang 19.1.7 still generates same warnings even though we use
+//     something like below:
+//     (https://github.com/torvalds/linux/blob/3ce9925823c7d6bb0e6eb951bf2db0e9e182582d/include/linux/args.h#L21)
+//
+//
+//     #define __COUNT_ARGS(_0, _1, _2, _3, _4, _5, _6, _n, X...) _n
+//     #define COUNT_ARGS(X...) __COUNT_ARGS(, ##X, 6, 5, 4, 3, 2, 1, 0)
+//
+//     This is weird, since there should be an empty token in the view of C
+//     preprocessor according to the comment(the link above) from Gustedt. This
+//     is a big rabbit-hole...
+//
+//     Furthermore, gcc 14.2 emits the following error, whereas clang 19.1.7
+//     only issues a warning for the same code. This distinction is important
+//     because gcc treats the issue as a compilation blocker, while clang
+//     permits the build to continue:
+//
+//     <source>:96:15: error: zero or negative size array '_tmp'
+//        96 |     elem_type _tmp[] = {__VA_ARGS__};                           \
+//           |               ^~~~
+//
+//     So users should ensure that they pass at least one argument for `...` to
+//     make their code portable. It's generally not a good idea to impose this
+//     responsibility to user. However, as we have seen, dealing with this issue
+//     only with C standard features is too verbose, especially considering that
+//     this file is intended for education. Rather, I think sharing this kind of
+//     consideration is itself educational, so I'm leaving it this as-is.
 #define vec_init_with(elem_type, vec, ...)                                     \
   do {                                                                         \
     _Static_assert(TYPE_EQ(*(vec)->items, elem_type),                          \
@@ -111,11 +171,7 @@
 //   - GCC / Clang: supported as an extension
 //   - MSVC: supported since Visual Studio 17.9 or later, or cl.exe version
 //           19.3933428 or later (`/std:clatest` option required)
-// Edge case handling:
-//   - Safe for zero arguments (no memory access unless element count > 0)
-// Caveat:
-//   - Do **not** call `vec_init` on a vector that has already been initialized
-//     (i.e., without a prior call to `vec_free`), or memory will leak.
+// Caveat: same as `vec_init_with`
 #define vec_init(vec, ...)                                                     \
   vec_init_with(typeof(*(vec)->items), (vec), __VA_ARGS__)
 
