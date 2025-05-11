@@ -107,7 +107,8 @@ void test_vec_init_with_static_strings(void) {
   StaticStrings v;
   const char *s1 = "foo";
   const char *s2 = "bar";
-  vec_init_with(const char *, &v, s1, s2);
+  char *s3 = "baz";
+  vec_init_with(const char *, &v, s1, s2, s3);
 
   assert(strncmp(vec_at(&v, 1), "bar", strlen(s2)) == 0);
 
@@ -245,7 +246,10 @@ void test_vec_init_static_strings(void) {
   StaticStrings v;
   const char *s1 = "foo";
   const char *s2 = "bar";
-  vec_init(&v, s1, s2);
+  char *s3 = "baz";
+  vec_init_with(const char *, &v, s1);
+  vec_push(&v, s2);
+  vec_push(&v, s3);
 
   assert(strncmp(vec_at(&v, 1), "bar", strlen(s2)) == 0);
 
