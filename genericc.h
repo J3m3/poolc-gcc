@@ -34,16 +34,21 @@
     size_t capacity;                                                           \
   } name
 
-#define vec_push(vec, item)                                                    \
+#define vec_reserve(vec, expected_cap)                                         \
   do {                                                                         \
-    if ((vec)->capacity <= (vec)->length) {                                    \
+    if ((vec)->capacity < expected_cap) {                                      \
       if ((vec)->capacity == 0)                                                \
         (vec)->capacity = INITIAL_CAP;                                         \
-      else                                                                     \
+      while ((vec)->capacity < expected_cap)                                   \
         (vec)->capacity *= CAP_INC_FACTOR;                                     \
       (vec)->items =                                                           \
           realloc((vec)->items, (vec)->capacity * sizeof(*(vec)->items));      \
     }                                                                          \
+  } while (0)
+
+#define vec_push(vec, item)                                                    \
+  do {                                                                         \
+    vec_reserve((vec), (vec)->length + 1);                                     \
     (vec)->items[(vec)->length++] = (item);                                    \
   } while (0)
 
@@ -75,8 +80,9 @@
     elem_type _tmp[] = {__VA_ARGS__};                                          \
     size_t _n = sizeof(_tmp) / sizeof(elem_type);                              \
                                                                                \
-    for (size_t _i = 0; _i < _n; ++_i)                                         \
-      vec_push((vec), _tmp[_i]);                                               \
+    vec_reserve((vec), _n);                                                    \
+    memcpy((vec)->items + (vec)->length, _tmp, sizeof(_tmp));                  \
+    (vec)->length += _n;                                                       \
   } while (0)
 
 #if HAS_TYPEOF
