@@ -26,6 +26,8 @@
 #define INITIAL_CAP 8
 #define CAP_INC_FACTOR 2
 
+#define TYPE_EQ(expr, type) _Generic((expr), type: 1, default: 0)
+
 // SAFETY: This is neither reentrant nor thread-safe!
 #define DEFINE_VEC(name, type)                                                 \
   typedef struct {                                                             \
@@ -73,6 +75,9 @@
 
 #define vec_init_with(elem_type, vec, ...)                                     \
   do {                                                                         \
+    _Static_assert(TYPE_EQ(*(vec)->items, elem_type),                          \
+                   "Incompatible element type");                               \
+                                                                               \
     (vec)->length = 0;                                                         \
     (vec)->capacity = 0;                                                       \
     (vec)->items = NULL;                                                       \
