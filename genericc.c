@@ -219,7 +219,7 @@ void test_vec_foreach_static_strings(void) {
 
   vec_free(&v);
 }
-#endif
+#endif // SUPPORTS_VEC_FOREACH
 
 // === Tests for vec_init ===
 #if SUPPORTS_VEC_INIT
@@ -256,7 +256,7 @@ void test_vec_init_static_strings(void) {
 
   vec_free(&v);
 }
-#endif
+#endif // SUPPORTS_VEC_INIT
 
 // === Tests for vec_find ===
 #if SUPPORTS_VEC_FIND
@@ -301,7 +301,7 @@ void test_vec_find_strings(void) {
 
   vec_free(&v);
 }
-#endif
+#endif // SUPPORTS_VEC_FIND
 
 // We can use #ifdef ... #endif, but let's go with simpler approach:
 // commenting out irrelevant tests. Then Visual Studio users can also easily
@@ -321,17 +321,17 @@ int main(void) {
   test_vec_foreach_ints();
   test_vec_foreach_points();
   test_vec_foreach_static_strings();
-#endif
+#endif // SUPPORTS_VEC_FOREACH
 #if SUPPORTS_VEC_INIT
   test_vec_init_ints();
   test_vec_init_points();
   test_vec_init_static_strings();
-#endif
+#endif // SUPPORTS_VEC_INIT
 #if SUPPORTS_VEC_FIND
   test_vec_find_ints();
   test_vec_find_points();
   test_vec_find_strings();
-#endif
+#endif // SUPPORTS_VEC_FIND
 
   printf("PASS!\n");
   return 0;
