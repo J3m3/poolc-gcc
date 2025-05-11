@@ -19,6 +19,9 @@
 #ifndef SUPPORTS_VEC_INIT
 #define SUPPORTS_VEC_INIT HAS_TYPEOF
 #endif
+#ifndef SUPPORTS_VEC_FOREACH
+#define SUPPORTS_VEC_FOREACH HAS_TYPEOF
+#endif
 #ifndef SUPPORTS_VEC_FIND
 #define SUPPORTS_VEC_FIND (HAS_TYPEOF && HAS_STMT_EXPRS)
 #endif
@@ -91,6 +94,11 @@
     (vec)->length += _n;                                                       \
   } while (0)
 
+// Note:
+//   - `it` here is a pointer to the current element.
+#define vec_foreach_with(elem_type, it, vec)                                   \
+  for (elem_type *it = (vec)->items; it < (vec)->items + (vec)->length; ++it)
+
 #if HAS_TYPEOF
 
 // Uses GNU-style `typeof`, standardized in C23:
@@ -111,10 +119,13 @@
 #define vec_init(vec, ...)                                                     \
   vec_init_with(typeof(*(vec)->items), (vec), __VA_ARGS__)
 
+#define vec_foreach(it, vec)                                                   \
+  vec_foreach_with(typeof(*(vec)->items), (it), (vec))
+
 #else // HAS_TYPEOF
 
 #pragma message(                                                               \
-    "Warning: vec_init is disabled on this compiler; use vec_init_with")
+    "Warning: vec_init and vec_foreach is disabled on this compiler; use vec_init_with")
 
 #endif // HAS_TYPEOF
 
