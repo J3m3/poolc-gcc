@@ -1,3 +1,6 @@
+#ifndef GENERICC_H
+#define GENERICC_H
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -153,3 +156,5 @@
 #pragma message("Warning: vec_find and vec_new are disabled on this compiler.")
 
 #endif // HAS_STMT_EXPRS && HAS_TYPEOF
+
+#endif // GENERICC_H
