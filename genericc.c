@@ -115,7 +115,7 @@ void test_vec_init_with_static_strings(void) {
   vec_free(&v);
 }
 
-// === Tests for vec_foreach ===
+// === Tests for vec_foreach_with ===
 void test_vec_foreach_with_ints(void) {
   Ints v;
   vec_init_with(int, &v, 2, 3, 5, 7, 11);
@@ -167,6 +167,7 @@ void test_vec_foreach_with_static_strings(void) {
   vec_free(&v);
 }
 
+// === Tests for vec_foreach ===
 #if SUPPORTS_VEC_FOREACH
 void test_vec_foreach_ints(void) {
   Ints v;
