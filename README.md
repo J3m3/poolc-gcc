@@ -28,3 +28,4 @@ This seminar explores some practical metaprogramming techniques in C to simulate
 ## Further Resources
 
 - [You don't need Generics in C](https://youtu.be/o94JcrQThaM?si=nCHgY8f6W4Lv9fQh)
+- [P99 - macros and functions for C99](https://gitlab.inria.fr/gustedt/p99)
