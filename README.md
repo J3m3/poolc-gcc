@@ -19,6 +19,11 @@ This seminar explores some practical metaprogramming techniques in C to simulate
 - [typeof, \_\_typeof\_\_ (C23) in MSVC](https://learn.microsoft.com/en-us/cpp/c-language/typeof-c?view=msvc-170)
 - [/std (Specify Language Standard Version in MSVC)](https://learn.microsoft.com/en-us/cpp/build/reference/std-specify-language-standard-version?view=msvc-170#syntax)
 - [Set compiler and build properties in Visual Studio](https://learn.microsoft.com/en-us/cpp/build/working-with-project-properties?view=msvc-170#c-compiler-and-linker-options)
+- [Is dereferencing null pointer valid in sizeof operation](https://stackoverflow.com/questions/19785518/is-dereferencing-null-pointer-valid-in-sizeof-operation)
+- [C99 draft standard](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf)
+- [Generic selection (since C11)](https://en.cppreference.com/w/c/language/generic)
+- [Static assertion (since C11)](https://en.cppreference.com/w/c/language/_Static_assert)
+- [Detect empty macro arguments](https://gustedt.wordpress.com/2010/06/08/detect-empty-macro-arguments/)
 
 ## Further Resources
 
