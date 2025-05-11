@@ -114,6 +114,111 @@ void test_vec_init_with_static_strings(void) {
   vec_free(&v);
 }
 
+// === Tests for vec_foreach ===
+void test_vec_foreach_with_ints(void) {
+  Ints v;
+  vec_init_with(int, &v, 2, 3, 5, 7, 11);
+
+  size_t ref_idx = 0;
+  int ref_arr[] = {2, 3, 5, 7, 11};
+  vec_foreach_with(int, x, &v) {
+    size_t idx = x - v.items;
+    assert(idx == ref_idx++);
+    assert(*x == ref_arr[idx]);
+  }
+
+  vec_free(&v);
+}
+
+void test_vec_foreach_with_points(void) {
+  Points v;
+  vec_init_with(Point, &v, (Point){2, 3}, (Point){5, 7}, (Point){11, 13});
+
+  size_t ref_idx = 0;
+  Point ref_arr[] = {(Point){2, 3}, (Point){5, 7}, (Point){11, 13}};
+  vec_foreach_with(Point, p, &v) {
+    size_t idx = p - v.items;
+    assert(idx == ref_idx++);
+    assert(p->x == ref_arr[idx].x);
+    assert(p->y == ref_arr[idx].y);
+  }
+
+  vec_free(&v);
+}
+
+void test_vec_foreach_with_static_strings(void) {
+  StaticStrings v;
+  const char *s1 = "foo";
+  const char *s2 = "bar";
+  char *s3 = "baz";
+  vec_init_with(const char *, &v, s1);
+  vec_push(&v, s2);
+  vec_push(&v, s3);
+
+  size_t ref_idx = 0;
+  const char *ref_arr[] = {s1, s2, s3};
+  vec_foreach_with(const char *, s, &v) {
+    size_t idx = s - v.items;
+    assert(idx == ref_idx++);
+    assert(strncmp(*s, ref_arr[idx], strlen(*s)) == 0);
+  }
+
+  vec_free(&v);
+}
+
+#if SUPPORTS_VEC_FOREACH
+void test_vec_foreach_ints(void) {
+  Ints v;
+  vec_init_with(int, &v, 2, 3, 5, 7, 11);
+
+  size_t ref_idx = 0;
+  int ref_arr[] = {2, 3, 5, 7, 11};
+  vec_foreach(x, &v) {
+    size_t idx = x - v.items;
+    assert(idx == ref_idx++);
+    assert(*x == ref_arr[idx]);
+  }
+
+  vec_free(&v);
+}
+
+void test_vec_foreach_points(void) {
+  Points v;
+  vec_init_with(Point, &v, (Point){2, 3}, (Point){5, 7}, (Point){11, 13});
+
+  size_t ref_idx = 0;
+  Point ref_arr[] = {(Point){2, 3}, (Point){5, 7}, (Point){11, 13}};
+  vec_foreach(p, &v) {
+    size_t idx = p - v.items;
+    assert(idx == ref_idx++);
+    assert(p->x == ref_arr[idx].x);
+    assert(p->y == ref_arr[idx].y);
+  }
+
+  vec_free(&v);
+}
+
+void test_vec_foreach_static_strings(void) {
+  StaticStrings v;
+  const char *s1 = "foo";
+  const char *s2 = "bar";
+  char *s3 = "baz";
+  vec_init_with(const char *, &v, s1);
+  vec_push(&v, s2);
+  vec_push(&v, s3);
+
+  size_t ref_idx = 0;
+  const char *ref_arr[] = {s1, s2, s3};
+  vec_foreach(s, &v) {
+    size_t idx = s - v.items;
+    assert(idx == ref_idx++);
+    assert(strncmp(*s, ref_arr[idx], strlen(*s)) == 0);
+  }
+
+  vec_free(&v);
+}
+#endif
+
 // === Tests for vec_init ===
 #if SUPPORTS_VEC_INIT
 void test_vec_init_ints(void) {
@@ -198,16 +303,25 @@ void test_vec_find_strings(void) {
 // follow the process.
 int main(void) {
   test_vec_basic_ints();
+
   test_vec_init_with_ints();
   test_vec_init_with_points();
   test_vec_init_with_static_strings();
 
+  test_vec_foreach_with_ints();
+  test_vec_foreach_with_points();
+  test_vec_foreach_with_static_strings();
+
+#if SUPPORTS_VEC_FOREACH
+  test_vec_foreach_ints();
+  test_vec_foreach_points();
+  test_vec_foreach_static_strings();
+#endif
 #if SUPPORTS_VEC_INIT
   test_vec_init_ints();
   test_vec_init_points();
   test_vec_init_static_strings();
 #endif
-
 #if SUPPORTS_VEC_FIND
   test_vec_find_ints();
   test_vec_find_points();
