@@ -45,6 +45,7 @@
         (vec)->capacity *= CAP_INC_FACTOR;                                     \
       (vec)->items =                                                           \
           realloc((vec)->items, (vec)->capacity * sizeof(*(vec)->items));      \
+      assert((vec)->items != NULL && "Cannot allocate more memory");           \
     }                                                                          \
   } while (0)
 
