@@ -5,6 +5,7 @@
 set -e
 
 : "${CC=}"
+: "${CFLAGS=-Wall -Wextra}"
 
 if [ -z "$CC" ]; then
     if command -v gcc >/dev/null 2>&1; then
@@ -21,5 +22,5 @@ src=genericc.c
 
 set -x
 
-$CC -o "${src%.c}" -g $src
-$CC -E $src > "expanded_$src" 2>/dev/null
+$CC $CFLAGS -o "${src%.c}" -g $src
+$CC $CFLAGS -E $src > "expanded_$src" 2>/dev/null
