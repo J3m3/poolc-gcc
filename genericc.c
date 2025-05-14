@@ -308,31 +308,47 @@ void test_vec_find_strings(void) {
 // follow the process.
 int main(void) {
   test_vec_basic_ints();
+  printf("PASS: test_vec_basic_ints\n");
 
   test_vec_init_with_ints();
+  printf("PASS: test_vec_init_with_ints\n");
   test_vec_init_with_points();
+  printf("PASS: test_vec_init_with_points\n");
   test_vec_init_with_static_strings();
+  printf("PASS: test_vec_init_with_static_strings\n");
 
   test_vec_foreach_with_ints();
+  printf("PASS: test_vec_foreach_with_ints\n");
   test_vec_foreach_with_points();
+  printf("PASS: test_vec_foreach_with_points\n");
   test_vec_foreach_with_static_strings();
+  printf("PASS: test_vec_foreach_with_static_strings\n");
 
 #if SUPPORTS_VEC_FOREACH
   test_vec_foreach_ints();
+  printf("PASS: test_vec_foreach_ints\n");
   test_vec_foreach_points();
+  printf("PASS: test_vec_foreach_points\n");
   test_vec_foreach_static_strings();
+  printf("PASS: test_vec_foreach_static_strings\n");
 #endif // SUPPORTS_VEC_FOREACH
 #if SUPPORTS_VEC_INIT
   test_vec_init_ints();
+  printf("PASS: test_vec_init_ints\n");
   test_vec_init_points();
+  printf("PASS: test_vec_init_points\n");
   test_vec_init_static_strings();
+  printf("PASS: test_vec_init_static_strings\n");
 #endif // SUPPORTS_VEC_INIT
 #if SUPPORTS_VEC_FIND
   test_vec_find_ints();
+  printf("PASS: test_vec_find_ints\n");
   test_vec_find_points();
+  printf("PASS: test_vec_find_points\n");
   test_vec_find_strings();
+  printf("PASS: test_vec_find_strings\n");
 #endif // SUPPORTS_VEC_FIND
 
-  printf("PASS!\n");
+  printf("ALL PASSED!\n");
   return 0;
 }
