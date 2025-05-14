@@ -73,8 +73,7 @@
   do {                                                                         \
     vec_clear((vec));                                                          \
     (vec)->capacity = 0;                                                       \
-    if ((vec)->items != NULL)                                                  \
-      free((vec)->items);                                                      \
+    free((vec)->items);                                                        \
   } while (0)
 
 // Caveat:
